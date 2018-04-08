@@ -1,0 +1,61 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.baomidou.springboot.config.DataSourceConfig",
+      "name": "mybatis-plus1",
+      "sourceMethod": "public com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean sqlSessionFactory1(javax.sql.DataSource) ",
+      "type": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean"
+    },
+    {
+      "sourceType": "com.baomidou.springboot.config.DataSourceConfig",
+      "name": "mybatis-plus2",
+      "sourceMethod": "public com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean sqlSessionFactory2(javax.sql.DataSource) ",
+      "type": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean"
+    },
+    {
+      "sourceType": "com.baomidou.springboot.config.DataSourceConfig",
+      "name": "spring.datasource",
+      "sourceMethod": "public javax.sql.DataSource dataSource1() ",
+      "type": "javax.sql.DataSource"
+    },
+    {
+      "sourceType": "com.baomidou.springboot.config.DataSourceConfig",
+      "name": "spring.datasource1",
+      "sourceMethod": "public javax.sql.DataSource dataSource2() ",
+      "type": "javax.sql.DataSource"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean",
+      "name": "mybatis-plus1.cache",
+      "type": "org.apache.ibatis.cache.Cache"
+    },
+    {
+      "sourceType": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean",
+      "name": "mybatis-plus1.database-id-provider",
+      "type": "org.apache.ibatis.mapping.DatabaseIdProvider"
+    },
+    {
+      "sourceType": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean",
+      "name": "mybatis-plus1.vfs",
+      "type": "java.lang.Class<? extends org.apache.ibatis.io.VFS>"
+    },
+    {
+      "sourceType": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean",
+      "name": "mybatis-plus2.cache",
+      "type": "org.apache.ibatis.cache.Cache"
+    },
+    {
+      "sourceType": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean",
+      "name": "mybatis-plus2.database-id-provider",
+      "type": "org.apache.ibatis.mapping.DatabaseIdProvider"
+    },
+    {
+      "sourceType": "com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean",
+      "name": "mybatis-plus2.vfs",
+      "type": "java.lang.Class<? extends org.apache.ibatis.io.VFS>"
+    }
+  ]
+}

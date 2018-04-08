@@ -1,0 +1,164 @@
+package com.baomidou.springboot.controller;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
+import com.baomidou.springboot.config.DBTypeEnum;
+import com.baomidou.springboot.config.DbContextHolder;
+import com.baomidou.springboot.entity.User;
+import com.baomidou.springboot.service.IUserService;
+
+/**
+ * 代码生成器，参考源码测试用例：
+ * <p>
+ * /mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/generator/MysqlGenerator.java
+ */
+@RestController
+@RequestMapping("/user") 
+public class UserController {
+
+    @Autowired
+    private IUserService userService;
+
+    /**
+     * 分页 PAGE
+     */
+    @GetMapping("/test")
+    public Page<User> test() {
+        return userService.selectPage(new Page<User>(0, 12));
+    }
+    
+    @GetMapping("/test7")
+    public List<User> test7() {
+    	List<User> total=new ArrayList<User>();
+    	DbContextHolder.setDbType(DBTypeEnum.one);
+    	List<User> userList = userService.selectList(new EntityWrapper());
+    	for (User user : userList) {
+    	System.out.println(user.getName());
+    	}
+    	
+    	//DbContextHolder.setDbType(DBTypeEnum.two);
+    	List<User> userList1 = userService.selectAll();
+    	for (User user : userList1) {
+    	System.out.println(user.getName());
+    	}
+    	total.addAll(userList);
+    	total.addAll(userList1);
+    
+        return total;
+    }
+
+    /**
+     * AR 部分测试
+     */
+    @GetMapping("/test1")
+    public Page<User> test1() {
+        User user = new User("testAr", 0, 1);
+        System.err.println("删除所有：" + user.delete(null));
+        user.setRole(111L);
+        user.setTestDate(new Date());
+        user.setPhone("13111110000");
+        user.insert();
+        System.err.println("查询插入结果：" + user.selectById().toString());
+        user.setName("mybatis-plus-ar");
+        System.err.println("更新：" + user.updateById());
+        return user.selectPage(new Page<User>(0, 12), null);
+    }
+
+    /**
+     * 增删改查 CRUD
+     */
+    @GetMapping("/test2")
+    public User test2() {
+        System.err.println("删除一条数据：" + userService.deleteById(1L));
+        System.err.println("deleteAll：" + userService.deleteAll());
+        System.err.println("插入一条数据：" + userService.insert(new User(1L, "张三", 17, 1)));
+        User user = new User("张三", 17, 1);
+        boolean result = userService.insert(user);
+        // 自动回写的ID
+        Long id = user.getId();
+        System.err.println("插入一条数据：" + result + ", 插入信息：" + user.toString());
+        System.err.println("查询：" + userService.selectById(id).toString());
+        System.err.println("更新一条数据：" + userService.updateById(new User(1L, "三毛", 18, 2)));
+        for (int i = 0; i < 5; ++i) {
+            userService.insert(new User(Long.valueOf(100 + i), "张三" + i, 17 + i, 1));
+        }
+        Page<User> userListPage = userService.selectPage(new Page<User>(1, 5), new EntityWrapper<>(new User()));
+        System.err.println("total=" + userListPage.getTotal() + ", current list size=" + userListPage.getRecords().size());
+        return userService.selectById(1L);
+    }
+
+    /**
+     * 插入 OR 修改
+     */
+    @GetMapping("/test3")
+    public User test3() {
+        userService.insertOrUpdate(new User(1L, "王五", 19, 3));
+        return userService.selectById(1L);
+    }
+
+    @GetMapping("/add")
+    public Object addUser() {
+        User user = new User("张三", 17, 1);
+        JSONObject result = new JSONObject();
+        result.put("result", userService.insert(user));
+        return result;
+    }
+
+    @GetMapping("/selectsql")
+    public Object getUserBySql() {
+        JSONObject result = new JSONObject();
+        result.put("records", userService.selectListBySQL());
+        return result;
+    }
+
+    /**
+     * 7、分页 size 一页显示数量  current 当前页码
+     * 方式一：http://localhost:8080/user/page?size=1&current=1<br>
+     * 方式二：http://localhost:8080/user/pagehelper?size=1&current=1<br>
+     */
+
+    // 参数模式分页
+    @GetMapping("/page")
+    public Object page(Page page) {
+        return userService.selectPage(page);
+    }
+
+    // ThreadLocal 模式分页
+    @GetMapping("/pagehelper")
+    public Object pagehelper(Page page) {
+        PageHelper.setPagination(page);
+        page.setRecords(userService.selectList(null));
+        page.setTotal(PageHelper.freeTotal());//获取总数并释放资源 也可以 PageHelper.getTotal()
+        return page;
+    }
+
+
+    /**
+     * 测试事物
+     * http://localhost:8080/user/test_transactional<br>
+     * 访问如下并未发现插入数据说明事物可靠！！<br>
+     * http://localhost:8080/user/test<br>
+     * <br>
+     * 启动  Application 加上 @EnableTransactionManagement 注解其实可无默认貌似就开启了<br>
+     * 需要事物的方法加上 @Transactional 必须的哦！！
+     */
+    @Transactional
+    @GetMapping("/test_transactional")
+    public void testTransactional() {
+        userService.insert(new User(1000L, "测试事物", 16, 3));
+        System.out.println(" 这里手动抛出异常，自动回滚数据");
+        throw new RuntimeException();
+    }
+}
