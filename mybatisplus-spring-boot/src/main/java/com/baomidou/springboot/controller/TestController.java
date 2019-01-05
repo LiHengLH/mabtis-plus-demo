@@ -10,8 +10,10 @@ public class TestController {
 	
 	public  void test(){
 		System.out.println(22222);
+		
 	}
 	public  void test2(){
 		System.out.println(3333);
+		System.out.println("111111");
 	}
 }
