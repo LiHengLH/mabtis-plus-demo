@@ -4,6 +4,7 @@
 	<groupId>com.baomidou</groupId>
 	<artifactId>mybatisplus-spring-boot</artifactId>
 	<version>1.0</version>
+	<packaging>war</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
