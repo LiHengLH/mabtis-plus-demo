@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 
 /**
  * mybatis-plus Spring Boot 测试 Demo<br>
@@ -39,12 +41,19 @@ public class Application {
      * </p>
      */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(Application.class);
-        app.setBannerMode(Banner.Mode.OFF);
-        app.run(args);
+//        SpringApplication app = new SpringApplication(Application.class);
+//        app.setBannerMode(Banner.Mode.OFF);
+//        app.run(args);
+    	 SpringApplication.run(Application.class, args);
 //		SpringApplication.run(Application.class, args);
         logger.info("PortalApplication is success!");
         System.err.println("sample started. http://localhost:8080/user/test");
     }
+    
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // 注意这里要指向原先用main方法执行的Application启动类
+        return builder.sources(Application.class);
+    }
+
 
 }
