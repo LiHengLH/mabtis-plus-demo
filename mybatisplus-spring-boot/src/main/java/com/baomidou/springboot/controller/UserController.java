@@ -39,6 +39,11 @@ public class UserController {
         return userService.selectPage(new Page<User>(0, 12));
     }
     
+    @GetMapping("/les")
+    public Page<User> testA() {
+        return userService.selectPage(new Page<User>(0, 12));
+    }
+    
     @GetMapping("/test7")
     public List<User> test7() {
     	List<User> total=new ArrayList<User>();
